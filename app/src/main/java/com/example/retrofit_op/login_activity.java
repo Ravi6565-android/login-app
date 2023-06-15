@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,12 +37,16 @@ public class login_activity extends AppCompatActivity {
               retro_instance.callApi().LOGIN_MODEL_CALLIN(semail,spassword).enqueue(new Callback<login_model>() {
                   @Override
                   public void onResponse(Call<login_model> call, Response<login_model> response) {
-                    if(response.isSuccessful()){
+                    if(response.isSuccessful()==true){
                         String tag ="tag";
-                        Log.d(tag, "name: "+response.body().name);
-                        Log.d(tag, "email: "+response.body().email);
-                        Log.d(tag, "id: "+response.body().id);
-                        Log.d(tag, "password: "+response.body().password);
+                        Log.d(tag, "name: "+response.body().getName());
+                        Log.d(tag, "email: "+response.body().getEmail());
+                        Log.d(tag, "id: "+response.body().getId());
+                        Log.d(tag, "password: "+response.body().getPassword());
+                        Toast.makeText(login_activity.this, "name=="+response.body().toString() , Toast.LENGTH_LONG).show();
+
+                    }else {
+                        Toast.makeText(login_activity.this, "account not found", Toast.LENGTH_LONG).show();
                     }
 
                   }
