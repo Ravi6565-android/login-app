@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,11 +41,14 @@ public class login_activity extends AppCompatActivity {
                   public void onResponse(Call<login_model> call, Response<login_model> response) {
                     if(response.isSuccessful()==true){
                         String tag ="tag";
-                        Log.d(tag, "name: "+response.body().getName());
-                        Log.d(tag, "email: "+response.body().getEmail());
-                        Log.d(tag, "id: "+response.body().getId());
-                        Log.d(tag, "password: "+response.body().getPassword());
+                        ArrayList<login_model> list = new ArrayList<>();
+
+                        Log.d(tag, "name: "+list.get(0).getName());
+                        Log.d(tag, "email: "+list.get(0).getEmail());
+                        Log.d(tag, "password: "+list.get(0).getPassword());
+                        Log.d(tag, "id: "+list.get(0).getId());
                         Toast.makeText(login_activity.this, "name=="+response.body().toString() , Toast.LENGTH_LONG).show();
+
 
                     }else {
                         Toast.makeText(login_activity.this, "account not found", Toast.LENGTH_LONG).show();
