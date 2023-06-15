@@ -2,6 +2,7 @@ package com.example.retrofit_op;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     EditText name,email,password;
-    Button submit;
+    Button submit,login;
     String sname,semail,spassword;
 
     @Override
@@ -30,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         password=findViewById(R.id.edit_password);
 
         submit=findViewById(R.id.submit);
+        login=findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(MainActivity.this,login_activity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 
