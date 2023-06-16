@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login_activity">
+    tools:context=".login_activity.login_activity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/applogo"
@@ -40,18 +41,9 @@
             android:textColor="@color/black"
             android:textSize="34sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="     EMAIL:"
-                android:textColor="@color/black"
-                android:textSize="30sp" />
+
+
 
             <EditText
                 android:id="@+id/editl_email"
@@ -62,23 +54,15 @@
                 android:hint="enter your email"
                 android:inputType="textEmailAddress"
                 android:textSize="30sp"
+                android:textAlignment="center"
+                android:elevation="1dp"
 
                 />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="PASSWORD:"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+
+
 
             <EditText
                 android:id="@+id/editl_password"
@@ -88,11 +72,11 @@
                 android:layout_marginTop="30dp"
                 android:hint="enter your password"
                 android:inputType="textPassword"
+                android:textAlignment="center"
                 android:textSize="25sp"
-
+                android:elevation="1dp"
                 />
 
-        </LinearLayout>
 
         <Button
             android:id="@+id/signin"
@@ -103,7 +87,8 @@
             android:background="@android:color/transparent"
             android:text="Login"
             android:textColor="@color/black"
-            app:backgroundTint="@null" />
+            app:backgroundTint="@null"
+            android:elevation="12dp"/>
 
 
     </LinearLayout>

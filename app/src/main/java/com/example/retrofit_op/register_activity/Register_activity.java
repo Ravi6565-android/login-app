@@ -1,4 +1,4 @@
-package com.example.retrofit_op;
+package com.example.retrofit_op.register_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,13 +10,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.retrofit_op.R;
+import com.example.retrofit_op.login_activity.login_activity;
 import com.example.retrofit_op.model_class.model_class;
+import com.example.retrofit_op.retro_instance;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class Register_activity extends AppCompatActivity {
 
     EditText name,email,password;
     Button submit,login;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
         name=findViewById(R.id.edit_name);
         email=findViewById(R.id.edit_email);
         password=findViewById(R.id.edit_password);
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this,login_activity.class);
+                Intent intent= new Intent(Register_activity.this, login_activity.class);
                 startActivity(intent);
             }
         });
@@ -63,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("con", "onResponse: Connection"+ response.body().getConnection());
                             if(response.body().getResult()==1){
 
-                                Toast.makeText(MainActivity.this, "successfully register", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Register_activity.this, "successfully register", Toast.LENGTH_LONG).show();
                             } else if (response.body().getResult()==2) {
-                                Toast.makeText(MainActivity.this, "Already register", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Register_activity.this, "Already register", Toast.LENGTH_LONG).show();
 
                             }else if(response.body().getResult()==0){
-                                Toast.makeText(MainActivity.this, "somthing went wrong", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Register_activity.this, "somthing went wrong", Toast.LENGTH_LONG).show();
 
                             }
                         }

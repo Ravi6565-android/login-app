@@ -1,4 +1,4 @@
-package com.example.retrofit_op;
+package com.example.retrofit_op.login_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.retrofit_op.R;
 import com.example.retrofit_op.model_class.LoginData;
+import com.example.retrofit_op.retro_instance;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +49,9 @@ public class login_activity extends AppCompatActivity {
                             Log.d("TAG", "id: "+response.body().getUserdata().getId());
                             Log.d("TAG", "email: "+response.body().getUserdata().getEmail());
                             Log.d("TAG", "password: "+response.body().getUserdata().getPassword());
+
+                        }else{
+                            Toast.makeText(login_activity.this, "account not found ", Toast.LENGTH_LONG).show();
 
                         }
 
