@@ -1,17 +1,27 @@
-package com.example.retrofit_op;
 
-public class login_model {
+package com.example.retrofit_op.model_class;
 
-    Integer id;
-    String name;
-    String email;
-    String password;
 
-    public Integer getId() {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+
+public class Userdata {
+
+
+    private String id;
+
+    private String name;
+
+    private String email;
+
+    private String password;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -38,4 +48,5 @@ public class login_model {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

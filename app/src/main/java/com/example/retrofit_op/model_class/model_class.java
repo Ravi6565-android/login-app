@@ -1,4 +1,4 @@
-package com.example.retrofit_op;
+package com.example.retrofit_op.model_class;
 
 public class model_class {
 Integer connection;

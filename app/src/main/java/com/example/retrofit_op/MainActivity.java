@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONObject;
+import com.example.retrofit_op.model_class.model_class;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<model_class> call, Response<model_class> response) {
                             Log.d("TAG", "onResponse: "+response.body().toString());
 
-                            Log.d("con", "onResponse: Connection"+response.body().connection);
-                            if(response.body().result==1){
+                            Log.d("con", "onResponse: Connection"+ response.body().getConnection());
+                            if(response.body().getResult()==1){
 
                                 Toast.makeText(MainActivity.this, "successfully register", Toast.LENGTH_LONG).show();
-                            } else if (response.body().result==2) {
+                            } else if (response.body().getResult()==2) {
                                 Toast.makeText(MainActivity.this, "Already register", Toast.LENGTH_LONG).show();
 
-                            }else if(response.body().result==0){
+                            }else if(response.body().getResult()==0){
                                 Toast.makeText(MainActivity.this, "somthing went wrong", Toast.LENGTH_LONG).show();
 
                             }
