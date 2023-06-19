@@ -52,6 +52,15 @@ public class Register_activity extends AppCompatActivity {
 
                     if(name.getText().toString().equals("")){
                         name.setError("empty field ",getResources().getDrawable(R.drawable.baseline_error_24));
+
+                    }
+                    if(email.getText().toString().equals("")){
+                        email.setError("empty field ",getResources().getDrawable(R.drawable.baseline_error_24));
+
+                    }
+                    if(password.getText().toString().equals("")){
+                        password.setError("empty field ",getResources().getDrawable(R.drawable.baseline_error_24));
+
                     }
                     sname=name.getText().toString();
                     semail=email.getText().toString();
