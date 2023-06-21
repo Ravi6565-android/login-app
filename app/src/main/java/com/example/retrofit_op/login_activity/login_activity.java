@@ -2,6 +2,7 @@ package com.example.retrofit_op.login_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.retrofit_op.R;
+import com.example.retrofit_op.home_sreen.Home_screen_actvity;
 import com.example.retrofit_op.model_class.LoginData;
 import com.example.retrofit_op.retro_instance;
 
@@ -45,10 +47,11 @@ public class login_activity extends AppCompatActivity {
 
                         if(response.body().getResult()==1){
                             Toast.makeText(login_activity.this, "account found ", Toast.LENGTH_LONG).show();
-                            Log.d("TAG", "name: "+response.body().getUserdata().getName());
-                            Log.d("TAG", "id: "+response.body().getUserdata().getId());
-                            Log.d("TAG", "email: "+response.body().getUserdata().getEmail());
-                            Log.d("TAG", "password: "+response.body().getUserdata().getPassword());
+                            Intent intent= new Intent(login_activity.this, Home_screen_actvity.class);
+                            intent.putExtra("name",response.body().getUserdata().getName());
+                            intent.putExtra("email",response.body().getUserdata().getEmail());
+                            startActivity(intent);
+
 
                         }else{
                             Toast.makeText(login_activity.this, "account not found ", Toast.LENGTH_LONG).show();
