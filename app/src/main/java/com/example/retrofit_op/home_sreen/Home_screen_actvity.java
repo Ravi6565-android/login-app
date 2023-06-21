@@ -4,8 +4,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.annotation.SuppressLint;
+import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.preferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,8 +30,8 @@ Toolbar toolbar;
         setSupportActionBar(toolbar);
 
 
-        name=getIntent().getStringExtra("name");
-        email=getIntent().getStringExtra("email");
+        name=preferences.getString("name","");
+        email=preferences.getString("email","");
         Log.d("TAG", "onCreate: name="+name+"\temail="+email);
         View view= navigationView.getHeaderView(0);
         header_name=view.findViewById(R.id.header_name);

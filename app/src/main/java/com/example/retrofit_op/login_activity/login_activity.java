@@ -1,5 +1,8 @@
 package com.example.retrofit_op.login_activity;
 
+import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.editor;
+import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.preferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -46,10 +49,13 @@ public class login_activity extends AppCompatActivity {
                     if(response.isSuccessful()){
 
                         if(response.body().getResult()==1){
+                            editor.putBoolean("isLogin",true);
+                            editor.putString("name",response.body().getUserdata().getName());
+                            editor.putString("email",response.body().getUserdata().getEmail());
+                            editor.apply();
+                            editor.commit();
                             Toast.makeText(login_activity.this, "account found ", Toast.LENGTH_LONG).show();
                             Intent intent= new Intent(login_activity.this, Home_screen_actvity.class);
-                            intent.putExtra("name",response.body().getUserdata().getName());
-                            intent.putExtra("email",response.body().getUserdata().getEmail());
                             startActivity(intent);
 
 
