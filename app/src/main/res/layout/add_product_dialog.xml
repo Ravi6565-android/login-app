@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="420dp"
+    android:layout_width="410dp"
     android:layout_height="match_parent"
     android:gravity="center">
 
@@ -60,16 +60,35 @@
         android:textAlignment="center"
         android:elevation="1dp"
         />
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD"
-        android:background="@color/white"
-        app:backgroundTint="@null"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:id="@+id/add"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  ADD  "
+            android:background="#15C31C"
+            app:backgroundTint="@null"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:id="@+id/add"
+            android:layout_marginHorizontal="10dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:background="#EA1010"
+            app:backgroundTint="@null"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cancel"
+            />
+    </LinearLayout>
 
 
 

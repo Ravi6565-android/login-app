@@ -52,6 +52,7 @@ public class login_activity extends AppCompatActivity {
                             editor.putBoolean("isLogin",true);
                             editor.putString("name",response.body().getUserdata().getName());
                             editor.putString("email",response.body().getUserdata().getEmail());
+                            editor.putInt("userid",response.body().getUserdata().getId());
                             editor.apply();
                             editor.commit();
                             Toast.makeText(login_activity.this, "account found ", Toast.LENGTH_LONG).show();

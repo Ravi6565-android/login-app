@@ -2,14 +2,10 @@
 package com.example.retrofit_op.model_class;
 
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-
 public class Userdata {
 
 
-    private String id;
+    private int id;
 
     private String name;
 
@@ -17,11 +13,11 @@ public class Userdata {
 
     private String password;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
