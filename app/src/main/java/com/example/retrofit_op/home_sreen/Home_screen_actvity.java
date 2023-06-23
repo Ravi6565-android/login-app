@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -141,16 +142,17 @@ public class Home_screen_actvity extends AppCompatActivity {
                         editor.putBoolean("isLogin", false);
                         editor.commit();
                         Intent intent = new Intent(Home_screen_actvity.this, Register_activity.class);
-                        closeContextMenu();
+                        drawerLayout.close();
                         startActivity(intent);
                     });
 
                     builder.setNegativeButton("no", (dialogInterface, i) -> {
-                        builder.setCancelable(true);
+
+                       drawerLayout.close();
                     });
                     builder.show();
                 } else if (item.getItemId() == R.id.menu_myprofile) {
-                    closeContextMenu();
+                    drawerLayout.close();
                 }
 
                 return false;
