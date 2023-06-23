@@ -1,15 +1,21 @@
 package com.example.retrofit_op.home_sreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.editor;
 import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.preferences;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +25,7 @@ import android.widget.Toast;
 import com.example.retrofit_op.Api_interface;
 import com.example.retrofit_op.R;
 import com.example.retrofit_op.model_class.ProductAddModel;
+import com.example.retrofit_op.register_activity.Register_activity;
 import com.example.retrofit_op.retro_instance;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,13 +49,13 @@ public class Home_screen_actvity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_actvity);
         init();//reffrence
-        setname();
+        setname(); //toolbar set in drawer user name and email set
 
 
-        //   setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Home_screen_actvity.this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        logout();
 
 
         floatingActionButton.setOnClickListener(v -> {
@@ -119,5 +126,35 @@ public class Home_screen_actvity extends AppCompatActivity {
         header_email = view.findViewById(R.id.header_email);
         header_name.setText(name);
         header_email.setText(email);
+    }
+
+    private void logout() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.menu_logout) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Home_screen_actvity.this);
+                    builder.setTitle("LOGOUT ?");
+                    builder.setMessage("Are You Sure You Want To Logout ?");
+                    builder.setPositiveButton("yes", (dialogInterface, i) -> {
+                        editor.putBoolean("isLogin", false);
+                        editor.commit();
+                        Intent intent = new Intent(Home_screen_actvity.this, Register_activity.class);
+                        closeContextMenu();
+                        startActivity(intent);
+                    });
+
+                    builder.setNegativeButton("no", (dialogInterface, i) -> {
+                        builder.setCancelable(true);
+                    });
+                    builder.show();
+                } else if (item.getItemId() == R.id.menu_myprofile) {
+                    closeContextMenu();
+                }
+
+                return false;
+            }
+        });
     }
 }
