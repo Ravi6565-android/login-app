@@ -25,12 +25,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler"
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/H_img"
+            android:scaleType="fitXY"
             />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnimg"
+            android:layout_below="@+id/H_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="chose"
+            />
+
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

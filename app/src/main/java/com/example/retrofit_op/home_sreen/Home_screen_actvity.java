@@ -1,6 +1,7 @@
 package com.example.retrofit_op.home_sreen;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,12 +15,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,10 @@ public class Home_screen_actvity extends AppCompatActivity {
     TextView header_name, header_email;
     String name, email;
     Toolbar toolbar;
+    Button button;
+
+    ImageView imageView;
+     int gellery=10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,12 @@ public class Home_screen_actvity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         logout();
+
+        button.setOnClickListener(view -> {
+         Intent intent = new Intent(Intent.ACTION_PICK);
+         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+         startActivityForResult(intent,gellery);
+        });
 
 
         floatingActionButton.setOnClickListener(v -> {
@@ -115,6 +128,8 @@ public class Home_screen_actvity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         floatingActionButton = findViewById(R.id.fab);
+        button= findViewById(R.id.btnimg);
+        imageView=findViewById(R.id.H_img);
     }
 
     private void setname() {
@@ -158,5 +173,16 @@ public class Home_screen_actvity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK);
+        {
+            if(requestCode==gellery){
+                imageView.setImageURI(data.getData());
+            }
+        }
     }
 }
