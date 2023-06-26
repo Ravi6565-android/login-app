@@ -1,6 +1,7 @@
 package com.example.retrofit_op.home_sreen;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,13 +14,18 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +37,11 @@ import com.example.retrofit_op.retro_instance;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +55,9 @@ public class Home_screen_actvity extends AppCompatActivity {
     TextView header_name, header_email;
     String name, email;
     Toolbar toolbar;
+    ImageView imageView;
+    String imagedata;
+    ImageView view1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +88,17 @@ public class Home_screen_actvity extends AppCompatActivity {
             pimage = dialog.findViewById(R.id.apimage);
             add = dialog.findViewById(R.id.add);
             cancel = dialog.findViewById(R.id.cancel);
+            imageView=dialog.findViewById(R.id.addImage);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    CropImage.ActivityBuilder activity = CropImage.activity();
+                    activity.setGuidelines(CropImageView.Guidelines.ON);
+                    activity.start(Home_screen_actvity.this);
+               }
+            });
 
 
             cancel.setOnClickListener(view -> {
@@ -87,16 +112,26 @@ public class Home_screen_actvity extends AppCompatActivity {
                 spprice = pprice.getText().toString();
                 spimage = pimage.getText().toString();
                 spname = pname.getText().toString();
-                retro_instance.callApi().PRODUCT_ADD_MODEL_CALL(uid, spname, spprice, spdisc, spimage)
+
+                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageInByte = baos.toByteArray();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                   imagedata = Base64.getEncoder().encodeToString(imageInByte);
+                    Log.d("TTT", "onCreate: "+imagedata);
+                }
+
+                retro_instance.callApi().PRODUCT_ADD_MODEL_CALL(uid, spname, spprice, spdisc, imagedata)
                         .enqueue(new Callback<ProductAddModel>() {
                             @Override
                             public void onResponse(Call<ProductAddModel> call, Response<ProductAddModel> response) {
-
+                                Log.d("TTT", "onResponse: Connection="+response.body().getProductaddd());
                             }
 
                             @Override
                             public void onFailure(Call<ProductAddModel> call, Throwable t) {
-
+                                Log.e("TTT", "onResponse: Error"+t.getLocalizedMessage());
                             }
                         });
 
@@ -127,9 +162,25 @@ public class Home_screen_actvity extends AppCompatActivity {
         header_email = view.findViewById(R.id.header_email);
         header_name.setText(name);
         header_email.setText(email);
+
     }
 
     private void logout() {
+
+       View view= navigationView.getHeaderView(0);
+        view1= view.findViewById(R.id.header_image);
+       view1.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+             Intent intent= new Intent();
+             intent.setType("image/*");
+             intent.setAction(Intent.ACTION_GET_CONTENT);
+
+               startActivityForResult(Intent.createChooser(intent, "Select Picture"), 10);
+
+           }
+     });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -158,5 +209,28 @@ public class Home_screen_actvity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode==10){
+            if(resultCode==RESULT_OK){
+                Uri uri=data.getData();
+                view1.setImageURI(uri);
+            }
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                imageView.setImageURI(resultUri);
+                Log.d("TTT", "onActivityResult: imgUri="+resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 }
