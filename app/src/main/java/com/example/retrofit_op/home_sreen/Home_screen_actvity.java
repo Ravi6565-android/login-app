@@ -6,18 +6,22 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.editor;
 import static com.example.retrofit_op.slapsh_screen.Splash_screen_activity.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,31 +30,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.retrofit_op.Api_interface;
 import com.example.retrofit_op.R;
+import com.example.retrofit_op.adapters.show_product_adapter;
 import com.example.retrofit_op.model_class.ProductAddModel;
+import com.example.retrofit_op.model_class.Product_get_model;
+import com.example.retrofit_op.model_class.Productdatum;
+import com.example.retrofit_op.model_class.Userdata;
 import com.example.retrofit_op.register_activity.Register_activity;
 import com.example.retrofit_op.retro_instance;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class Home_screen_actvity extends AppCompatActivity {
 
     NavigationView navigationView;
+    RecyclerView recyclerView;
     DrawerLayout drawerLayout;
     FloatingActionButton floatingActionButton;
     TextView header_name, header_email;
     String name, email;
     Toolbar toolbar;
     Button button;
+    String imagedata;
 
-    ImageView imageView;
-     int gellery=10;
+
+    ImageView pimage, h_img;
+    int gellery = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +83,45 @@ public class Home_screen_actvity extends AppCompatActivity {
         toggle.syncState();
         logout();
 
-        button.setOnClickListener(view -> {
-         Intent intent = new Intent(Intent.ACTION_PICK);
-         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-         startActivityForResult(intent,gellery);
-        });
-
 
         floatingActionButton.setOnClickListener(v -> {
+
+            int userid =preferences.getInt("userid",2);
+            retro_instance.callApi().PRODUCT_GET_MODEL_CALL(userid).enqueue(new Callback<Product_get_model>() {
+                @Override
+                public void onResponse(Call<Product_get_model> call, Response<Product_get_model> response) {
+                    List<Product_get_model> Userdata= new ArrayList<>();
+                    Log.d("TAG", "onResponse:name ="+response.body().getProductdata().get(0).getPname());
+                    Log.d("TAG", "onResponse:price ="+response.body().getProductdata().get(0).getPprice());
+//                for (int i=0;i<response.body().getProductdata().size();i++){
+//                    Userdata.add(i,response.body().getProductdata());
+//                }
+                    if (response.isSuccessful()) {
+
+
+                        if (response.body().getConnection() == 1) {
+                            if (response.body().getResult() == 1) {
+                                show_product_adapter adapter = new show_product_adapter(Home_screen_actvity.this, Userdata);
+                                LinearLayoutManager manager = new LinearLayoutManager(Home_screen_actvity.this);
+                                manager.setOrientation(RecyclerView.VERTICAL);
+                                recyclerView.setLayoutManager(manager);
+
+                                recyclerView.setAdapter(adapter);
+                            }
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(Call<Product_get_model> call, Throwable t) {
+
+                }
+            });
+
+
             Dialog dialog = new Dialog(Home_screen_actvity.this);
             dialog.setContentView(R.layout.add_product_dialog);
 
-            EditText pname, pprice, pdisc, pimage;
+            EditText pname, pprice, pdisc;
 
             int uid;
             uid = preferences.getInt("userid", 0);
@@ -92,19 +137,35 @@ public class Home_screen_actvity extends AppCompatActivity {
             cancel.setOnClickListener(view -> {
                 dialog.dismiss();
             });
+            pimage.setOnClickListener(view -> {
+
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(this);
+            });
 
 
             add.setOnClickListener(v1 -> {
-                String spname, spprice, spdisc, spimage;
+                String spname, spprice, spdisc;
                 spdisc = pdisc.getText().toString();
                 spprice = pprice.getText().toString();
-                spimage = pimage.getText().toString();
                 spname = pname.getText().toString();
-                retro_instance.callApi().PRODUCT_ADD_MODEL_CALL(uid, spname, spprice, spdisc, spimage)
+
+                Bitmap bitmap = ((BitmapDrawable) pimage.getDrawable()).getBitmap();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] imageinarayy = byteArrayOutputStream.toByteArray();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    imagedata = Base64.getEncoder().encodeToString(imageinarayy);
+                }
+
+                retro_instance.callApi().PRODUCT_ADD_MODEL_CALL(uid, spname, spprice, spdisc, imagedata)
                         .enqueue(new Callback<ProductAddModel>() {
                             @Override
                             public void onResponse(Call<ProductAddModel> call, Response<ProductAddModel> response) {
-
+                                if (response.body().getProductaddd() == 1) {
+                                    Toast.makeText(Home_screen_actvity.this, "product Added", Toast.LENGTH_LONG).show();
+                                }
                             }
 
                             @Override
@@ -128,8 +189,12 @@ public class Home_screen_actvity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         floatingActionButton = findViewById(R.id.fab);
-        button= findViewById(R.id.btnimg);
-        imageView=findViewById(R.id.H_img);
+        View view = navigationView.getHeaderView(0);
+       // imageView = view.findViewById(R.id.header_image);
+        recyclerView=findViewById(R.id.recycler);
+
+
+
     }
 
     private void setname() {
@@ -145,6 +210,16 @@ public class Home_screen_actvity extends AppCompatActivity {
     }
 
     private void logout() {
+//        imageView.setOnClickListener(view -> {
+//
+//            Intent intent = new Intent();
+//            intent.setType("image/*");
+//            intent.setAction(Intent.ACTION_GET_CONTENT);
+//
+//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), gellery);
+//
+//        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -163,7 +238,7 @@ public class Home_screen_actvity extends AppCompatActivity {
 
                     builder.setNegativeButton("no", (dialogInterface, i) -> {
 
-                       drawerLayout.close();
+                        drawerLayout.close();
                     });
                     builder.show();
                 } else if (item.getItemId() == R.id.menu_myprofile) {
@@ -175,13 +250,17 @@ public class Home_screen_actvity extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK);
-        {
-            if(requestCode==gellery){
-                imageView.setImageURI(data.getData());
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result= CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) ;
+            {
+                Uri uri=result.getUri();
+                pimage.setImageURI(uri);
+
             }
         }
     }
