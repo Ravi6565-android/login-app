@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class Home_screen_actvity extends AppCompatActivity {
     Toolbar toolbar;
     Button button;
     String imagedata;
+    ProgressBar progressBar;
 
 
     ImageView pimage, h_img;
@@ -76,7 +78,7 @@ public class Home_screen_actvity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen_actvity);
         init();//reffrence
         setname(); //toolbar set in drawer user name and email set
-
+        show_product_method();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Home_screen_actvity.this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
@@ -86,36 +88,6 @@ public class Home_screen_actvity extends AppCompatActivity {
 
         floatingActionButton.setOnClickListener(v -> {
 
-            int userid =preferences.getInt("userid",2);
-            retro_instance.callApi().PRODUCT_GET_MODEL_CALL(userid).enqueue(new Callback<Product_get_model>() {
-                @Override
-                public void onResponse(Call<Product_get_model> call, Response<Product_get_model> response) {
-                    List<Product_get_model> Userdata= new ArrayList<>();
-                    Log.d("TAG", "onResponse:name ="+response.body().getProductdata().get(0).getPname());
-                    Log.d("TAG", "onResponse:price ="+response.body().getProductdata().get(0).getPprice());
-//                for (int i=0;i<response.body().getProductdata().size();i++){
-//                    Userdata.add(i,response.body().getProductdata());
-//                }
-                    if (response.isSuccessful()) {
-
-
-                        if (response.body().getConnection() == 1) {
-                            if (response.body().getResult() == 1) {
-                                show_product_adapter adapter = new show_product_adapter(Home_screen_actvity.this, Userdata);
-                                LinearLayoutManager manager = new LinearLayoutManager(Home_screen_actvity.this);
-                                manager.setOrientation(RecyclerView.VERTICAL);
-                                recyclerView.setLayoutManager(manager);
-
-                                recyclerView.setAdapter(adapter);
-                            }
-                        }
-                    }
-                }
-                @Override
-                public void onFailure(Call<Product_get_model> call, Throwable t) {
-
-                }
-            });
 
 
             Dialog dialog = new Dialog(Home_screen_actvity.this);
@@ -192,6 +164,7 @@ public class Home_screen_actvity extends AppCompatActivity {
         View view = navigationView.getHeaderView(0);
        // imageView = view.findViewById(R.id.header_image);
         recyclerView=findViewById(R.id.recycler);
+        progressBar=findViewById(R.id.ProgressBar);
 
 
 
@@ -207,6 +180,44 @@ public class Home_screen_actvity extends AppCompatActivity {
         header_email = view.findViewById(R.id.header_email);
         header_name.setText(name);
         header_email.setText(email);
+    }
+
+    private void show_product_method(){
+        int userid =preferences.getInt("userid",2);
+        retro_instance.callApi().PRODUCT_GET_MODEL_CALL(userid).enqueue(new Callback<Product_get_model>() {
+            @Override
+            public void onResponse(Call<Product_get_model> call, Response<Product_get_model> response) {
+                List<Productdatum> Userdata;
+                Userdata= response.body().getProductdata();
+                if(Userdata!=null){
+                    progressBar.setVisibility(View.GONE);
+                }
+                for (int i = 0; i < Userdata.size(); i++) {
+                    Log.d("API", "onResponse: name="+Userdata.get(i).getPname());
+                }
+
+//
+                if (response.isSuccessful()) {
+
+
+                    if (response.body().getConnection() == 1) {
+                        if (response.body().getResult() == 1) {
+                            show_product_adapter adapter = new show_product_adapter(Home_screen_actvity.this, Userdata);
+                            LinearLayoutManager manager = new LinearLayoutManager(Home_screen_actvity.this);
+                            manager.setOrientation(RecyclerView.VERTICAL);
+                            recyclerView.setLayoutManager(manager);
+
+                            recyclerView.setAdapter(adapter);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<Product_get_model> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void logout() {
