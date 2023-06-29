@@ -69,7 +69,7 @@ public class Home_screen_actvity extends AppCompatActivity {
     ProgressBar progressBar;
 
 
-    ImageView pimage, h_img;
+    ImageView pimage, profile;
     int gellery = 10;
 
     @Override
@@ -162,7 +162,7 @@ public class Home_screen_actvity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         floatingActionButton = findViewById(R.id.fab);
         View view = navigationView.getHeaderView(0);
-       // imageView = view.findViewById(R.id.header_image);
+         profile = view.findViewById(R.id.header_image);
         recyclerView=findViewById(R.id.recycler);
         progressBar=findViewById(R.id.ProgressBar);
 
@@ -178,6 +178,7 @@ public class Home_screen_actvity extends AppCompatActivity {
         View view = navigationView.getHeaderView(0);
         header_name = view.findViewById(R.id.header_name);
         header_email = view.findViewById(R.id.header_email);
+        profile=view.findViewById(R.id.header_image);
         header_name.setText(name);
         header_email.setText(email);
     }
@@ -221,15 +222,15 @@ public class Home_screen_actvity extends AppCompatActivity {
     }
 
     private void logout() {
-//        imageView.setOnClickListener(view -> {
-//
-//            Intent intent = new Intent();
-//            intent.setType("image/*");
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//
-//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), gellery);
-//
-//        });
+        profile.setOnClickListener(view -> {
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), gellery);
+
+        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -265,6 +266,10 @@ public class Home_screen_actvity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RESULT_OK){
+
+        }
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result= CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) ;

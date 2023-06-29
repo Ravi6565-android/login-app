@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.retrofit_op.R;
 import com.example.retrofit_op.home_sreen.Home_screen_actvity;
 import com.example.retrofit_op.model_class.LoginData;
+import com.example.retrofit_op.register_activity.Register_activity;
 import com.example.retrofit_op.retro_instance;
 
 import retrofit2.Call;
@@ -23,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class login_activity extends AppCompatActivity {
-    Button sigin;
+    Button sigin,L_register;
     EditText email,password;
 
 
@@ -33,8 +34,15 @@ public class login_activity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sigin=findViewById(R.id.signin);
+        L_register=findViewById(R.id.L_register);
         email=findViewById(R.id.editl_email);
         password=findViewById(R.id.editl_password);
+
+        L_register.setOnClickListener(v -> {
+          Intent intent= new Intent(login_activity.this, Register_activity.class);
+          startActivity(intent);
+          finish();
+        });
 
         sigin.setOnClickListener(new View.OnClickListener() {
             @Override

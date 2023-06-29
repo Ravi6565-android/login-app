@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
-            android:text="MY APP"
+            android:text="Welecome Back !"
             android:textColor="@color/black"
             android:textSize="34sp"
 
@@ -81,13 +81,25 @@
 
         <Button
             android:id="@+id/signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#479CDF"
+            android:text="Login"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            android:elevation="2dp"/>
+        <Button
+            android:id="@+id/L_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
-            android:text="Login"
+            android:text="don't have account ? \nregister."
             android:textColor="@color/black"
+
             app:backgroundTint="@null"
             android:elevation="2dp"/>
 
