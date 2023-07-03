@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.retrofit_op.R;
 import com.example.retrofit_op.home_sreen.Home_screen_actvity;
 import com.example.retrofit_op.register_activity.Register_activity;
@@ -16,10 +17,13 @@ public class Splash_screen_activity extends AppCompatActivity {
     public static SharedPreferences preferences;
     public static SharedPreferences.Editor editor;
     Boolean islogin=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+
         preferences=getSharedPreferences("my_pref",MODE_PRIVATE);
         editor=preferences.edit();
        islogin= preferences.getBoolean("isLogin",false);
