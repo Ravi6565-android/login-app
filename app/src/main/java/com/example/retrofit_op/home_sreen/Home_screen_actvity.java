@@ -41,6 +41,7 @@ import com.example.retrofit_op.register_activity.Register_activity;
 import com.example.retrofit_op.retro_instance;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -65,7 +66,7 @@ public class Home_screen_actvity extends AppCompatActivity {
     String imagedata;
     ProgressBar progressBar;
     List<Productdatum> Userdata;
-    int Position=100;
+    int Position = 100;
     show_product_adapter adapter;
 
     ImageView pimage, haderImageView;
@@ -153,7 +154,6 @@ public class Home_screen_actvity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void init() {
@@ -197,10 +197,10 @@ public class Home_screen_actvity extends AppCompatActivity {
 
                     if (response.body().getConnection() == 1) {
                         if (response.body().getResult() == 1) {
-                             adapter = new show_product_adapter(Home_screen_actvity.this, Userdata, new getPosition() {
+                            adapter = new show_product_adapter(Home_screen_actvity.this, Userdata, new getPosition() {
                                 @Override
                                 public void getPosition(int position, Boolean status) {
-                                    if(status){
+                                    if (status) {
 
                                         Dialog dialog = new Dialog(Home_screen_actvity.this);
                                         dialog.setContentView(R.layout.add_product_dialog);
@@ -242,14 +242,14 @@ public class Home_screen_actvity extends AppCompatActivity {
                                                 imagedata = Base64.getEncoder().encodeToString(imageinarayy);
 
                                             }
-                                            int id= Integer.parseInt(Userdata.get(position).getId());
-                                            String imagename=Userdata.get(position).getPimage();
-                                            retro_instance.callApi().call_update(id,spname, spprice, spdisc, imagedata,imagename)
+                                            int id = Integer.parseInt(Userdata.get(position).getId());
+                                            String imagename = Userdata.get(position).getPimage();
+                                            retro_instance.callApi().call_update(id, spname, spprice, spdisc, imagedata, imagename)
                                                     .enqueue(new Callback<model_class>() {
                                                         @Override
                                                         public void onResponse(Call<model_class> call, Response<model_class> response) {
-                                                            if (response.body().getConnection()==1) {
-                                                                if(response.body().getResult()==1){
+                                                            if (response.body().getConnection() == 1) {
+                                                                if (response.body().getResult() == 1) {
                                                                     Toast.makeText(Home_screen_actvity.this, "product Added", Toast.LENGTH_LONG).show();
                                                                     show_product_method();
                                                                 }
@@ -265,7 +265,6 @@ public class Home_screen_actvity extends AppCompatActivity {
                                             dialog.dismiss();
                                         });
                                         dialog.show();
-
 
 
                                     }
@@ -336,13 +335,13 @@ public class Home_screen_actvity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==gellery){
-            if(resultCode==RESULT_OK){
-                Uri uri=data.getData();
+        if (requestCode == gellery) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
                 haderImageView.setImageURI(uri);
             }
 
-        }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) ;
             {
@@ -352,4 +351,6 @@ public class Home_screen_actvity extends AppCompatActivity {
             }
         }
     }
+
+
 }
