@@ -38,9 +38,9 @@ int famount=0;
             @Override
             public void onClick(View view) {
                 Checkout checkout= new Checkout();
-                checkout.setKeyID("");
+                checkout.setKeyID("rzp_test_79eLEUWWu6zYKp");
                Drawable drawable=pimage.getDrawable();
-                checkout.setImage(Integer.parseInt(drawable.toString()) );
+                checkout.setImage(R.drawable.app_logo);
 
                 JSONObject  object= new JSONObject();
                 try {
