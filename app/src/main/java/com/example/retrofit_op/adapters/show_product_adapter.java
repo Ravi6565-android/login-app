@@ -2,6 +2,7 @@ package com.example.retrofit_op.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.retrofit_op.Payment_activity;
 import com.example.retrofit_op.getPosition;
 import com.example.retrofit_op.model_class.DeleteModel;
 import com.example.retrofit_op.retro_instance;
@@ -78,9 +80,10 @@ public class show_product_adapter extends RecyclerView.Adapter<show_product_adap
             tname = itemView.findViewById(R.id.spname);
             tprice = itemView.findViewById(R.id.spprice);
             imageView = itemView.findViewById(R.id.spimage);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View view) {
+                public boolean onLongClick(View view) {
+
                     PopupMenu popupMenu = new PopupMenu(context, itemView);
                     popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -116,6 +119,18 @@ public class show_product_adapter extends RecyclerView.Adapter<show_product_adap
 
                     popupMenu.show();
 
+                    return true;
+                }
+            });
+                
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=  new Intent(context, Payment_activity.class);
+                    intent.putExtra("image",Userdata.get(getAdapterPosition()).getPimage());
+                    intent.putExtra("price",Userdata.get(getAdapterPosition()).getPprice());
+                    intent.putExtra("name",Userdata.get(getAdapterPosition()).getPname());
+                    context.startActivity(intent);
                 }
             });
         }

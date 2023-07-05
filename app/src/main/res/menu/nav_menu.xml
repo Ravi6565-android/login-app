@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_cart"
-        android:title="CART"
+    <item
+        android:id="@+id/menu_cart"
         android:icon="@drawable/baseline_shopping_cart_24"
-        />
-    <item android:id="@+id/menu_myprofile"
-        android:title="PROFILE"
+        android:title="CART" />
+    <item
+        android:id="@+id/menu_myprofile"
         android:icon="@drawable/baseline_person_24"
-        />
-    <item android:id="@+id/menu_logout"
-    android:title="LOGOUT"
-    android:icon="@drawable/baseline_logout_24"
-    />
+        android:title="PROFILE" />
+    <item
+        android:id="@+id/menu_logout"
+        android:icon="@drawable/baseline_logout_24"
+        android:title="LOGOUT" />
+
+    <group android:checkableBehavior="single">
+
+
+        <item android:title="COMMUNICATION" />
+        <item
+            android:id="@+id/menu_aboutus"
+            android:title="ABOUT"
+            android:iconTint="@android:color/transparent"
+            android:icon="@drawable/baseline_contact_support_24"
+
+            />
+
+
+    </group>
+
 </menu>

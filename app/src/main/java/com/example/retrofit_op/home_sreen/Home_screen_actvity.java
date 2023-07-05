@@ -62,7 +62,6 @@ public class Home_screen_actvity extends AppCompatActivity {
     TextView header_name, header_email;
     String name, email;
     Toolbar toolbar;
-    Button button;
     String imagedata;
     ProgressBar progressBar;
     List<Productdatum> Userdata;
@@ -172,7 +171,7 @@ public class Home_screen_actvity extends AppCompatActivity {
     private void setname() {
         toolbar.setTitle("E_Commerce app ");
         setSupportActionBar(toolbar);
-        name = preferences.getString("name", "");
+        name = preferences.getString("name","");
         email = preferences.getString("email", "");
         View view = navigationView.getHeaderView(0);
         header_name = view.findViewById(R.id.header_name);
